@@ -654,7 +654,7 @@
                                     </label>
                                     <input type="url" id="omobSheetUrl" 
                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                           placeholder="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0">
+                                           placeholder="https://docs.google.com/spreadsheets/d/e/2PACX-1vRt10eeYY9-doBYPH5Yg_uh5qbPL_sNvUp2kKmSUJ-7eGpLkwbxv528DtANlagqMArVdrXfVrtvvHkZ/pubhtml?gid=0&single=true">
                                     <p class="text-xs text-gray-500 mt-1">Paste URL lengkap Google Sheets OMOB Anda</p>
                                 </div>
                                 <div>
@@ -663,7 +663,7 @@
                                     </label>
                                     <input type="url" id="oplSheetUrl" 
                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                           placeholder="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0">
+                                           placeholder="https://docs.google.com/spreadsheets/d/e/2PACX-1vTTij3r7UY5ln7SjE34DiypKhJ_n74LE4IFy8x8Wnuub5ADYgX1ntOJLQptO1ugD67n-W64fRyuRQa9/pubhtml?gid=303262600&single=true">
                                     <p class="text-xs text-gray-500 mt-1">Paste URL lengkap Google Sheets OPL Anda</p>
                                 </div>
                             </div>
