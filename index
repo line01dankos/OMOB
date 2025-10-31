@@ -1,0 +1,2907 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Machine One Book - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-shadow { box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .nav-active { background: rgba(255,255,255,0.2); }
+        .page { display: none; }
+        .page.active { display: block; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-2xl relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-full h-full">
+                <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <defs>
+                        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100" height="100" fill="url(#grid)" />
+                </svg>
+            </div>
+        </div>
+        
+        <div class="container mx-auto px-6 py-6 relative z-10">
+            <!-- Main Header Content -->
+            <div class="flex items-center justify-between mb-6">
+                <!-- Left Section - Logo & Title -->
+                <div class="flex items-center space-x-6">
+                    <!-- Enhanced Company Logo -->
+                    <div class="relative">
+                        <div class="bg-white bg-opacity-20 backdrop-blur-sm p-4 rounded-2xl shadow-lg border border-white border-opacity-30">
+                            <div class="relative">
+                                <svg class="w-12 h-12 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                                <!-- Decorative dots -->
+                                <div class="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+                                <div class="absolute -bottom-1 -left-1 w-2 h-2 bg-green-400 rounded-full animate-pulse delay-300"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Title Section -->
+                    <div class="space-y-1">
+                        <h1 class="text-3xl font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent drop-shadow-sm">
+                            One Machine One Book
+                        </h1>
+                        <div class="flex items-center space-x-3">
+                            <div class="h-px bg-gradient-to-r from-blue-200 to-transparent w-8"></div>
+                            <p class="text-blue-100 text-sm font-medium">
+                                Dashboard Monitoring Dokumen NBL Oral
+                            </p>
+                            <div class="h-px bg-gradient-to-l from-blue-200 to-transparent w-8"></div>
+                        </div>
+                        <div class="flex items-center space-x-2 mt-2">
+                            <div class="px-3 py-1 bg-white bg-opacity-20 backdrop-blur-sm rounded-full border border-white border-opacity-30">
+                                <span class="text-xs font-semibold text-white">PT. Dankos Farma</span>
+                            </div>
+                            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                            <span class="text-xs text-blue-100">System Online</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Section - Controls & Status -->
+                <div class="flex items-center space-x-4">
+                    <!-- Status Indicators -->
+                    <div class="hidden lg:flex items-center space-x-4 px-4 py-3 bg-white bg-opacity-10 backdrop-blur-sm rounded-xl border border-white border-opacity-20">
+                        <div class="text-center">
+                            <div class="text-lg font-bold text-white">12</div>
+                            <div class="text-xs text-blue-100">Mesin</div>
+                        </div>
+                        <div class="w-px h-8 bg-white bg-opacity-30"></div>
+                        <div class="text-center">
+                            <div class="text-lg font-bold text-green-300">83%</div>
+                            <div class="text-xs text-blue-100">Complete</div>
+                        </div>
+                        <div class="w-px h-8 bg-white bg-opacity-30"></div>
+                        <div class="text-center">
+                            <div class="text-lg font-bold text-yellow-300">18</div>
+                            <div class="text-xs text-blue-100">OPL</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Control Buttons -->
+                    <div class="flex items-center space-x-2">
+
+                        
+                        <!-- Configuration Button -->
+                        <button onclick="openConfigModal()" class="group flex items-center px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-xl transition-all duration-300 border border-white border-opacity-30 hover:scale-105">
+                            <svg class="w-4 h-4 mr-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="text-sm font-medium text-white">Config</span>
+                        </button>
+                        
+                        <!-- Refresh Button -->
+                        <button onclick="refreshDashboard()" class="group flex items-center px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-xl transition-all duration-300 border border-white border-opacity-30 hover:scale-105">
+                            <svg class="w-4 h-4 mr-2 text-white group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                            <span class="text-sm font-medium text-white">Refresh</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Last Update Info -->
+                    <div class="text-right bg-white bg-opacity-10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white border-opacity-20">
+                        <div class="flex items-center space-x-2 mb-1">
+                            <svg class="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <p class="text-sm text-blue-100 font-medium">Last Updated</p>
+                        </div>
+                        <p class="text-sm font-bold text-white leading-tight" id="lastUpdate"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced Navigation -->
+            <nav class="relative">
+                <div class="flex items-center justify-center">
+                    <div class="flex space-x-2 bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-2 border border-white border-opacity-20 shadow-lg">
+                        <button onclick="showPage('progress')" class="nav-btn group relative px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 nav-active" data-page="progress">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 00-2-2z"></path>
+                                </svg>
+                                <span>Progress OMOB</span>
+                            </div>
+                        </button>
+                        <button onclick="showPage('detail')" class="nav-btn group relative px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300" data-page="detail">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>Detail Dokumen</span>
+                            </div>
+                        </button>
+                        <button onclick="showPage('opl')" class="nav-btn group relative px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300" data-page="opl">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                </svg>
+                                <span>Dashboard OPL</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Decorative Elements -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-32 translate-x-32"></div>
+        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full translate-y-24 -translate-x-24"></div>
+    </header>
+
+    <!-- Progress OMOB Page -->
+    <div id="progressPage" class="page active">
+        <div class="container mx-auto px-6 py-8">
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="widget">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-blue-100 rounded-full">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-500 text-sm">Total Mesin</p>
+                            <p class="text-2xl font-bold text-gray-800" id="totalMachines">12</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-green-100 rounded-full">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-500 text-sm">Dokumen Lengkap</p>
+                            <p class="text-2xl font-bold text-gray-800" id="completeMachines">10</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-yellow-100 rounded-full">
+                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-500 text-sm">Dokumen Kurang</p>
+                            <p class="text-2xl font-bold text-gray-800" id="incompleteMachines">2</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-red-100 rounded-full">
+                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-500 text-sm">SOP Akan Expired</p>
+                            <p class="text-2xl font-bold text-gray-800" id="expiringSOP">3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                <!-- Progress Chart -->
+                <div class="lg:col-span-1">
+                    <div class="widget">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Progress Keseluruhan</h3>
+                        <div class="flex justify-center">
+                            <canvas id="progressChart" width="200" height="200"></canvas>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <p class="text-3xl font-bold text-gray-800" id="overallProgress">83%</p>
+                            <p class="text-gray-500 text-sm">Dokumen Lengkap</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Machine Status -->
+                <div class="lg:col-span-2">
+                    <div class="widget">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Status Dokumen per Mesin</h3>
+                        <div id="machineStatusList" class="space-y-4">
+                            <!-- Machine status items will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Incomplete Documents Section -->
+            <div class="widget mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800">Dokumen Belum Lengkap</h3>
+                    <div class="flex space-x-4">
+                        <!-- Multi-select Filter by Machine -->
+                        <div class="relative">
+                            <button id="machineFilterBtn" onclick="toggleMachineFilter()" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white flex items-center space-x-2 min-w-[150px]">
+                                <span id="machineFilterText">Semua Mesin</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="machineFilterDropdown" class="hidden absolute z-10 mt-1 w-64 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                <div class="p-2">
+                                    <label class="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded">
+                                        <input type="checkbox" value="" onchange="updateMachineFilter()" checked>
+                                        <span class="text-sm">Semua Mesin</span>
+                                    </label>
+                                    <div id="machineFilterOptions">
+                                        <!-- Machine options will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Multi-select Filter by Room -->
+                        <div class="relative">
+                            <button id="roomFilterBtn" onclick="toggleRoomFilter()" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white flex items-center space-x-2 min-w-[150px]">
+                                <span id="roomFilterText">Semua Ruangan</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="roomFilterDropdown" class="hidden absolute z-10 mt-1 w-64 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                <div class="p-2">
+                                    <label class="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded">
+                                        <input type="checkbox" value="" onchange="updateRoomFilter()" checked>
+                                        <span class="text-sm">Semua Ruangan</span>
+                                    </label>
+                                    <div id="roomFilterOptions">
+                                        <!-- Room options will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Export Buttons -->
+                        <button onclick="exportIncompleteDocuments('pdf')" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span>Export PDF</span>
+                        </button>
+                        
+                        <button onclick="exportIncompleteDocuments('excel')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span>Export Excel</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Dokumen</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Dokumen</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nomor Dokumen</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mesin</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ruangan</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Revisi</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="incompleteDocumentsTable" class="bg-white divide-y divide-gray-200">
+                            <!-- Incomplete documents will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Dokumen Page -->
+    <div id="detailPage" class="page">
+        <div class="container mx-auto px-6 py-8">
+            <!-- Expiring SOPs Section -->
+            <div class="widget mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800">SOP yang Akan Expired (90 Hari ke Depan)</h3>
+                    <div class="flex space-x-4">
+                        <!-- Filter by Days -->
+                        <select id="expiryDaysFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="filterExpiringSOP()">
+                            <option value="90">90 Hari</option>
+                            <option value="60">60 Hari</option>
+                            <option value="30">30 Hari</option>
+                            <option value="7">7 Hari</option>
+                        </select>
+                        
+                        <!-- Calendar Toggle -->
+                        <button onclick="toggleSOPCalendar()" id="calendarToggleBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <span>Tampilkan Kalender</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Calendar View -->
+                <div id="sopCalendar" class="hidden mb-6">
+                    <div class="bg-white border border-gray-200 rounded-lg p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <button onclick="changeCalendarMonth(-1)" class="p-2 hover:bg-gray-100 rounded-lg">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <h4 id="calendarTitle" class="text-lg font-semibold text-gray-800"></h4>
+                            <button onclick="changeCalendarMonth(1)" class="p-2 hover:bg-gray-100 rounded-lg">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="calendarGrid" class="grid grid-cols-7 gap-1">
+                            <!-- Calendar will be populated here -->
+                        </div>
+                        <div class="mt-4 flex items-center space-x-4 text-sm">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 bg-red-200 rounded"></div>
+                                <span>Expired/Akan Expired (7 hari)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 bg-yellow-200 rounded"></div>
+                                <span>Akan Expired (30 hari)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 bg-blue-200 rounded"></div>
+                                <span>Akan Expired (90 hari)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Expiring SOPs Table -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mesin</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dokumen</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nomor Dokumen</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Expired</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sisa Hari</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expiringSOPTable" class="bg-white divide-y divide-gray-200">
+                            <!-- Expiring SOPs will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Detail Documents Section -->
+            <div class="widget mb-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Detail Dokumen per Mesin</h3>
+                <div id="detailDocumentList" class="space-y-4">
+                    <!-- Document details will be populated here -->
+                </div>
+            </div>
+
+            <!-- Expiring SOPs Section -->
+            <div class="widget">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800">SOP yang Akan Expired (90 Hari ke Depan)</h3>
+                    <div class="flex space-x-4">
+                        <!-- Filter by Days -->
+                        <select id="expiryDaysFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="filterExpiringSOP()">
+                            <option value="90">90 Hari</option>
+                            <option value="60">60 Hari</option>
+                            <option value="30">30 Hari</option>
+                            <option value="7">7 Hari</option>
+                        </select>
+                        
+                        <!-- Calendar Toggle -->
+                        <button onclick="toggleSOPCalendar()" id="calendarToggleBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z"></path>
+                            </svg>
+                            <span>Tampilkan Kalender</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Calendar View -->
+                <div id="sopCalendar" class="hidden mb-6">
+                    <div class="bg-white border border-gray-200 rounded-lg p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <button onclick="changeCalendarMonth(-1)" class="p-2 hover:bg-gray-100 rounded-lg">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <h4 id="calendarTitle" class="text-lg font-semibold text-gray-800"></h4>
+                            <button onclick="changeCalendarMonth(1)" class="p-2 hover:bg-gray-100 rounded-lg">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="calendarGrid" class="grid grid-cols-7 gap-1">
+                            <!-- Calendar will be populated here -->
+                        </div>
+                        <div class="mt-4 flex items-center space-x-4 text-sm">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 bg-red-200 rounded"></div>
+                                <span>Expired/Akan Expired (7 hari)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 bg-yellow-200 rounded"></div>
+                                <span>Akan Expired (30 hari)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-4 h-4 bg-blue-200 rounded"></div>
+                                <span>Akan Expired (90 hari)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Expiring SOPs Table -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mesin</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dokumen</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nomor Dokumen</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Expired</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sisa Hari</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expiringSOPTable" class="bg-white divide-y divide-gray-200">
+                            <!-- Expiring SOPs will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard OPL Page -->
+    <div id="oplPage" class="page">
+        <div class="container mx-auto px-6 py-8">
+            <!-- OPL Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="widget">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-blue-100 rounded-full">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-500 text-sm">Total OPL</p>
+                            <p class="text-2xl font-bold text-gray-800" id="totalOPL">18</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-green-100 rounded-full">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-500 text-sm">Mesin/Area Tercakup</p>
+                            <p class="text-2xl font-bold text-gray-800" id="totalMachinesOPL">12</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-yellow-100 rounded-full">
+                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 00-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-500 text-sm">Rata-rata OPL/Mesin</p>
+                            <p class="text-2xl font-bold text-gray-800" id="avgOPLPerMachine">1.5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OPL Table -->
+            <div class="widget">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800">Database OPL (One Point Lesson)</h3>
+                    <div class="flex space-x-4">
+                        <!-- Search Box -->
+                        <div class="relative">
+                            <input type="text" id="oplSearch" placeholder="Cari OPL..." 
+                                   class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   onkeyup="filterOPL()">
+                            <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        
+                        <!-- Filter by Machine -->
+                        <select id="machineFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="filterOPL()">
+                            <option value="">Semua Mesin/Area</option>
+                        </select>
+                        
+                        <!-- Export Button -->
+                        <button onclick="exportOPLData()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span>Export</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul OPL</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nomor OPL</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rev</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penyusun</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">OPL Owner</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issued Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mesin/Area</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="oplTableBody" class="bg-white divide-y divide-gray-200">
+                            <!-- OPL data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration Modal -->
+    <div id="configModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800">Konfigurasi Google Sheets</h3>
+                    <button onclick="closeConfigModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Configuration Content -->
+                <div class="space-y-6">
+                    <!-- Connection Status -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div id="connectionStatus" class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <span id="connectionText" class="text-sm font-medium text-gray-700">Belum Terhubung</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Step-by-step Configuration -->
+                    <div class="space-y-6">
+                        <!-- Step 1: Google Sheets URLs -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4">
+                                <span class="bg-blue-500 text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-sm mr-2">1</span>
+                                URL Google Sheets
+                            </h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        OMOB Spreadsheet URL (untuk halaman Progress & Detail)
+                                    </label>
+                                    <input type="url" id="omobSheetUrl" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                           placeholder="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0">
+                                    <p class="text-xs text-gray-500 mt-1">Paste URL lengkap Google Sheets OMOB Anda</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        OPL Spreadsheet URL (untuk halaman Dashboard OPL)
+                                    </label>
+                                    <input type="url" id="oplSheetUrl" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                           placeholder="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0">
+                                    <p class="text-xs text-gray-500 mt-1">Paste URL lengkap Google Sheets OPL Anda</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: Make Sheets Public -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4">
+                                <span class="bg-blue-500 text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-sm mr-2">2</span>
+                                Buat Sheets Dapat Diakses Publik
+                            </h4>
+                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                                <div class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-yellow-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                    </svg>
+                                    <div>
+                                        <p class="text-sm font-medium text-yellow-800">Penting!</p>
+                                        <p class="text-sm text-yellow-700">Untuk keamanan, pastikan spreadsheet tidak mengandung data sensitif sebelum dibuat publik.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-3 text-sm text-gray-700">
+                                <p><strong>Langkah-langkah:</strong></p>
+                                <ol class="list-decimal list-inside space-y-2 ml-4">
+                                    <li>Buka Google Sheets Anda</li>
+                                    <li>Klik tombol <strong>"Share"</strong> (Bagikan) di pojok kanan atas</li>
+                                    <li>Klik <strong>"Change to anyone with the link"</strong></li>
+                                    <li>Pilih <strong>"Viewer"</strong> sebagai permission</li>
+                                    <li>Klik <strong>"Done"</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3: Sheet Structure -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4">
+                                <span class="bg-blue-500 text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-sm mr-2">3</span>
+                                Format Spreadsheet yang Diperlukan
+                            </h4>
+                            
+                            <!-- OMOB Sheet Format -->
+                            <div class="mb-6">
+                                <h5 class="font-semibold text-gray-700 mb-2">OMOB Spreadsheet (Sheet 1):</h5>
+                                <div class="bg-gray-50 p-3 rounded text-xs overflow-x-auto">
+                                    <table class="min-w-full text-xs">
+                                        <thead>
+                                            <tr class="bg-gray-200">
+                                                <th class="px-2 py-1 text-left">A</th>
+                                                <th class="px-2 py-1 text-left">B</th>
+                                                <th class="px-2 py-1 text-left">C</th>
+                                                <th class="px-2 py-1 text-left">D</th>
+                                                <th class="px-2 py-1 text-left">E</th>
+                                                <th class="px-2 py-1 text-left">F</th>
+                                                <th class="px-2 py-1 text-left">G</th>
+                                                <th class="px-2 py-1 text-left">H</th>
+                                                <th class="px-2 py-1 text-left">I</th>
+                                                <th class="px-2 py-1 text-left">J</th>
+                                                <th class="px-2 py-1 text-left">K</th>
+                                                <th class="px-2 py-1 text-left">L</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="px-2 py-1 border">Proses</td>
+                                                <td class="px-2 py-1 border">No. Ruangan</td>
+                                                <td class="px-2 py-1 border">Nama Mesin</td>
+                                                <td class="px-2 py-1 border">Jenis Mesin</td>
+                                                <td class="px-2 py-1 border">Dokumen Wajib</td>
+                                                <td class="px-2 py-1 border">No. Dokumen</td>
+                                                <td class="px-2 py-1 border">Judul Dokumen</td>
+                                                <td class="px-2 py-1 border">Revisi ke-</td>
+                                                <td class="px-2 py-1 border">Issued date</td>
+                                                <td class="px-2 py-1 border">Review Date</td>
+                                                <td class="px-2 py-1 border">Status</td>
+                                                <td class="px-2 py-1 border">Status/mesin</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-2 space-y-1">
+                                    <p><strong>Kolom E (Dokumen Wajib):</strong> SOP, Logbook, HIRA, IIA, OPL</p>
+                                    <p><strong>Kolom K (Status):</strong> "complete", "lengkap", "ada" untuk dokumen lengkap</p>
+                                    <p><strong>Kolom L (Status/mesin):</strong> Status keseluruhan mesin</p>
+                                    <p><strong>Catatan:</strong> Setiap mesin bisa memiliki multiple baris untuk setiap jenis dokumen</p>
+                                </div>
+                            </div>
+                            
+                            <!-- OPL Sheet Format -->
+                            <div>
+                                <h5 class="font-semibold text-gray-700 mb-2">OPL Spreadsheet (Sheet 1):</h5>
+                                <div class="bg-gray-50 p-3 rounded text-xs overflow-x-auto">
+                                    <table class="min-w-full text-xs">
+                                        <thead>
+                                            <tr class="bg-gray-200">
+                                                <th class="px-2 py-1 text-left">A</th>
+                                                <th class="px-2 py-1 text-left">B</th>
+                                                <th class="px-2 py-1 text-left">C</th>
+                                                <th class="px-2 py-1 text-left">D</th>
+                                                <th class="px-2 py-1 text-left">E</th>
+                                                <th class="px-2 py-1 text-left">F</th>
+                                                <th class="px-2 py-1 text-left">G</th>
+                                                <th class="px-2 py-1 text-left">H</th>
+                                                <th class="px-2 py-1 text-left">...</th>
+                                                <th class="px-2 py-1 text-left">N</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="px-2 py-1 border">Nomor</td>
+                                                <td class="px-2 py-1 border">Judul OPL</td>
+                                                <td class="px-2 py-1 border">Nomor OPL</td>
+                                                <td class="px-2 py-1 border">Rev</td>
+                                                <td class="px-2 py-1 border">Penyusun</td>
+                                                <td class="px-2 py-1 border">OPL Owner</td>
+                                                <td class="px-2 py-1 border">Issued Date</td>
+                                                <td class="px-2 py-1 border">Mesin/area</td>
+                                                <td class="px-2 py-1 border">...</td>
+                                                <td class="px-2 py-1 border">Link OPL</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-2 space-y-1">
+                                    <p><strong>Kolom A:</strong> Nomor urut (diabaikan)</p>
+                                    <p><strong>Kolom B-H:</strong> Data utama OPL</p>
+                                    <p><strong>Kolom I-M:</strong> Kolom tambahan (diabaikan)</p>
+                                    <p><strong>Kolom N:</strong> Link OPL untuk akses dokumen</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 4: Google Apps Script Setup -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4">
+                                <span class="bg-blue-500 text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-sm mr-2">4</span>
+                                Setup Google Apps Script (Opsional - Untuk Koneksi yang Lebih Stabil)
+                            </h4>
+                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                                <div class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <div>
+                                        <p class="text-sm font-medium text-blue-800">Google Apps Script untuk Koneksi API</p>
+                                        <p class="text-sm text-blue-700">Untuk koneksi yang lebih stabil dan menghindari CORS, Anda dapat menggunakan Google Apps Script sebagai API endpoint.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h5 class="font-semibold text-gray-700 mb-2">Langkah Setup Apps Script:</h5>
+                                    <ol class="list-decimal list-inside space-y-2 text-sm text-gray-700 ml-4">
+                                        <li>Buka <a href="https://script.google.com" target="_blank" class="text-blue-600 hover:underline">Google Apps Script</a></li>
+                                        <li>Klik "New Project" dan beri nama "OMOB Dashboard API"</li>
+                                        <li>Copy paste kode Apps Script di bawah ini</li>
+                                        <li>Ganti SPREADSHEET_ID dengan ID spreadsheet Anda</li>
+                                        <li>Deploy sebagai Web App dengan akses "Anyone"</li>
+                                        <li>Copy URL deployment dan masukkan di field Apps Script URL</li>
+                                    </ol>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Apps Script URL (Opsional)
+                                    </label>
+                                    <input type="url" id="appsScriptUrl" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                           placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec">
+                                    <p class="text-xs text-gray-500 mt-1">Jika diisi, akan digunakan sebagai prioritas utama untuk koneksi data</p>
+                                </div>
+                                
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <h6 class="font-semibold text-gray-700 mb-2">Kode Google Apps Script:</h6>
+                                    <div class="bg-gray-900 text-green-400 p-4 rounded text-xs overflow-x-auto font-mono">
+                                        <pre id="appsScriptCode">// Google Apps Script untuk OMOB Dashboard
+// Ganti OMOB_SPREADSHEET_ID dan OPL_SPREADSHEET_ID dengan ID spreadsheet Anda
+
+const OMOB_SPREADSHEET_ID = 'YOUR_OMOB_SPREADSHEET_ID_HERE';
+const OPL_SPREADSHEET_ID = 'YOUR_OPL_SPREADSHEET_ID_HERE';
+
+function doGet(e) {
+  const action = e.parameter.action;
+  
+  try {
+    if (action === 'getOMOBData') {
+      return getOMOBData();
+    } else if (action === 'getOPLData') {
+      return getOPLData();
+    } else {
+      return ContentService
+        .createTextOutput(JSON.stringify({error: 'Invalid action'}))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({error: error.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function getOMOBData() {
+  const sheet = SpreadsheetApp.openById(OMOB_SPREADSHEET_ID).getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  
+  if (data.length < 2) {
+    return ContentService
+      .createTextOutput(JSON.stringify({error: 'No data found'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  const headers = data[0];
+  const rows = data.slice(1);
+  
+  const processedData = [];
+  const machineGroups = {};
+  
+  rows.forEach((row, index) => {
+    if (row.length < 12) return; // Skip incomplete rows
+    
+    const process = row[0] || '';
+    const roomNumber = row[1] || '';
+    const machineName = row[2] || '';
+    const machineType = row[3] || '';
+    const docType = (row[4] || '').toLowerCase().trim();
+    const docNumber = row[5] || '';
+    const docTitle = row[6] || '';
+    const revision = parseInt(row[7]) || 0;
+    const issuedDate = row[8] || '';
+    const reviewDate = row[9] || '';
+    const docStatus = (row[10] || '').toLowerCase().trim();
+    const machineStatus = (row[11] || '').toLowerCase().trim();
+    
+    const machineKey = `${machineName}_${roomNumber}`;
+    
+    if (!machineGroups[machineKey]) {
+      machineGroups[machineKey] = {
+        id: Object.keys(machineGroups).length + 1,
+        process: process,
+        roomNumber: roomNumber,
+        machineName: machineName,
+        machineType: machineType,
+        machineStatus: machineStatus,
+        documents: {}
+      };
+    }
+    
+    // Map document types
+    let mappedDocType = '';
+    if (docType.includes('sop') || docType.includes('standard')) {
+      mappedDocType = 'sop';
+    } else if (docType.includes('logbook') || docType.includes('log')) {
+      mappedDocType = 'logbook';
+    } else if (docType.includes('hira') || docType.includes('hazard')) {
+      mappedDocType = 'hira';
+    } else if (docType.includes('iia') || docType.includes('impact')) {
+      mappedDocType = 'iia';
+    } else if (docType.includes('opl') || docType.includes('one point')) {
+      mappedDocType = 'opl';
+    } else {
+      mappedDocType = docType.replace(/\s+/g, '').toLowerCase();
+    }
+    
+    if (mappedDocType) {
+      // Calculate expiry date (1 year from review date or issued date)
+      let expiryDate = '';
+      if (reviewDate) {
+        const reviewDateObj = new Date(reviewDate);
+        if (!isNaN(reviewDateObj.getTime())) {
+          reviewDateObj.setFullYear(reviewDateObj.getFullYear() + 1);
+          expiryDate = Utilities.formatDate(reviewDateObj, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+        }
+      } else if (issuedDate) {
+        const issuedDateObj = new Date(issuedDate);
+        if (!isNaN(issuedDateObj.getTime())) {
+          issuedDateObj.setFullYear(issuedDateObj.getFullYear() + 1);
+          expiryDate = Utilities.formatDate(issuedDateObj, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+        }
+      }
+      
+      machineGroups[machineKey].documents[mappedDocType] = {
+        status: (docStatus === 'complete' || docStatus === 'lengkap' || docStatus === 'ada') ? 'complete' : 'incomplete',
+        docNumber: docNumber,
+        title: docTitle || `${mappedDocType.toUpperCase()} ${machineName}`,
+        revision: revision,
+        issuedDate: issuedDate,
+        reviewDate: reviewDate,
+        expiryDate: expiryDate
+      };
+    }
+  });
+  
+  // Convert to array and ensure all machines have all document types
+  const requiredDocTypes = ['sop', 'logbook', 'hira', 'iia', 'opl'];
+  
+  Object.values(machineGroups).forEach(machine => {
+    requiredDocTypes.forEach(docType => {
+      if (!machine.documents[docType]) {
+        machine.documents[docType] = {
+          status: 'incomplete',
+          docNumber: '',
+          title: `${docType.toUpperCase()} ${machine.machineName}`,
+          revision: 0,
+          issuedDate: '',
+          reviewDate: '',
+          expiryDate: ''
+        };
+      }
+    });
+    
+    processedData.push(machine);
+  });
+  
+  return ContentService
+    .createTextOutput(JSON.stringify({success: true, data: processedData}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function getOPLData() {
+  const sheet = SpreadsheetApp.openById(OPL_SPREADSHEET_ID).getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  
+  if (data.length < 2) {
+    return ContentService
+      .createTextOutput(JSON.stringify({error: 'No data found'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  const headers = data[0];
+  const rows = data.slice(1);
+  
+  const processedData = [];
+  
+  rows.forEach((row, index) => {
+    if (row.length < 8) return; // Skip incomplete rows
+    
+    // Skip if essential data is missing
+    if (!row[1] && !row[2]) return; // Skip if no title and no OPL number
+    
+    const opl = {
+      id: index + 1,
+      title: row[1] || '', // Column B - Judul OPL
+      oplNumber: row[2] || '', // Column C - Nomor OPL
+      revision: parseInt(row[3]) || 1, // Column D - Rev
+      author: row[4] || '', // Column E - Penyusun
+      owner: row[5] || '', // Column F - OPL Owner
+      issuedDate: row[6] ? Utilities.formatDate(new Date(row[6]), Session.getScriptTimeZone(), 'yyyy-MM-dd') : new Date().toISOString().split('T')[0], // Column G - Issued Date
+      machineArea: row[7] || '', // Column H - Mesin/area
+      oplLink: row[13] || '#' // Column N - Link OPL (index 13 = column N)
+    };
+    
+    processedData.push(opl);
+  });
+  
+  return ContentService
+    .createTextOutput(JSON.stringify({success: true, data: processedData}))
+    .setMimeType(ContentService.MimeType.JSON);
+}</pre>
+                                    </div>
+                                    <button onclick="copyAppsScriptCode()" class="mt-2 px-3 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700 transition-colors">
+                                        Copy Code
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 5: Test Connection -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4">
+                                <span class="bg-blue-500 text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-sm mr-2">5</span>
+                                Test Koneksi
+                            </h4>
+                            <div class="flex space-x-4">
+                                <button onclick="testConnection()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                    Test Koneksi
+                                </button>
+                                <button onclick="saveConfiguration()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                    Simpan Konfigurasi
+                                </button>
+                            </div>
+                            <div id="testResults" class="mt-4 hidden">
+                                <!-- Test results will appear here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Machine Detail Modal -->
+    <div id="machineDetailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="modalMachineTitle" class="text-xl font-semibold text-gray-800"></h3>
+                    <button onclick="closeMachineDetail()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="modalMachineContent" class="space-y-4">
+                    <!-- Machine details will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Footer -->
+    <footer class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white mt-16">
+        <div class="container mx-auto px-6 py-8">
+            <!-- Main Footer Content -->
+            <div class="flex justify-center items-center mb-6">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-gradient-to-br from-blue-500 to-indigo-600 p-3 rounded-xl shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                            One Machine One Book
+                        </h3>
+                        <p class="text-gray-300 text-sm">Dashboard Monitoring Dokumen NBL Oral</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="border-t border-gray-700 pt-6">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <!-- Copyright -->
+                    <div class="text-gray-400 text-sm">
+                        © 2025 <span class="font-semibold text-white">PT. Dankos Farma</span>. All rights reserved.
+                    </div>
+
+                    <!-- Version -->
+                    <div class="flex items-center space-x-2 text-sm text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z"></path>
+                        </svg>
+                        <span>Version 1.0.0</span>
+                    </div>
+                </div>
+                
+                <!-- Developer Credit -->
+                <div class="mt-4 pt-4 border-t border-gray-700">
+                    <div class="flex justify-center items-center">
+                        <div class="flex items-center space-x-2 text-sm text-gray-400">
+                            <span>Dikembangkan dengan</span>
+                            <svg class="w-4 h-4 text-red-500 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                            <span>oleh</span>
+                            <span class="font-semibold text-blue-400 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                                TSUP-NBL Oral
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Decorative Bottom Border -->
+        <div class="h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+    </footer>
+
+    <script>
+        // Enhanced dummy data with more realistic and comprehensive information
+        const omobData = [
+            {
+                id: 1,
+                process: "Tablet Production",
+                roomNumber: "R101",
+                machineName: "Tablet Press TP-01",
+                machineType: "Rotary Tablet Press",
+                documents: {
+                    sop: { status: "complete", docNumber: "SOP-TP-001", title: "SOP Operasi Tablet Press", revision: 4, reviewDate: "2025-02-15", expiryDate: "2025-02-15" },
+                    logbook: { status: "complete", docNumber: "LB-TP-001", title: "Logbook Tablet Press", revision: 2, reviewDate: "2025-08-20", expiryDate: "2026-08-20" },
+                    hira: { status: "complete", docNumber: "HIRA-TP-001", title: "HIRA Tablet Production", revision: 3, reviewDate: "2025-07-10", expiryDate: "2026-07-10" },
+                    iia: { status: "complete", docNumber: "IIA-TP-001", title: "IIA Tablet Press Operation", revision: 2, reviewDate: "2025-05-30", expiryDate: "2026-05-30" },
+                    opl: { status: "complete", docNumber: "OPL-TP-001", title: "OPL Tablet Press Setup", revision: 1, reviewDate: "2025-04-25", expiryDate: "2026-04-25" }
+                }
+            },
+            {
+                id: 2,
+                process: "Capsule Filling",
+                roomNumber: "R102",
+                machineName: "Capsule Filler CF-02",
+                machineType: "Automatic Capsule Filler",
+                documents: {
+                    sop: { status: "complete", docNumber: "SOP-CF-002", title: "SOP Capsule Filling", revision: 3, reviewDate: "2025-05-20", expiryDate: "2026-05-20" },
+                    logbook: { status: "complete", docNumber: "LB-CF-002", title: "Logbook Capsule Filler", revision: 1, reviewDate: "2025-07-15", expiryDate: "2026-07-15" },
+                    hira: { status: "complete", docNumber: "HIRA-CF-002", title: "HIRA Capsule Filling", revision: 2, reviewDate: "2025-06-05", expiryDate: "2026-06-05" },
+                    iia: { status: "complete", docNumber: "IIA-CF-002", title: "IIA Capsule Filling Process", revision: 1, reviewDate: "2025-04-18", expiryDate: "2026-04-18" },
+                    opl: { status: "complete", docNumber: "OPL-CF-002", title: "OPL Capsule Weight Control", revision: 2, reviewDate: "2025-08-01", expiryDate: "2026-08-01" }
+                }
+            },
+            {
+                id: 3,
+                process: "Coating",
+                roomNumber: "R103",
+                machineName: "Coating Pan CP-03",
+                machineType: "Film Coating Machine",
+                documents: {
+                    sop: { status: "complete", docNumber: "SOP-CP-003", title: "SOP Film Coating", revision: 2, reviewDate: "2025-07-30", expiryDate: "2026-07-30" },
+                    logbook: { status: "complete", docNumber: "LB-CP-003", title: "Logbook Coating Pan", revision: 1, reviewDate: "2025-06-25", expiryDate: "2026-06-25" },
+                    hira: { status: "complete", docNumber: "HIRA-CP-003", title: "HIRA Coating Process", revision: 1, reviewDate: "2025-05-15", expiryDate: "2026-05-15" },
+                    iia: { status: "complete", docNumber: "IIA-CP-003", title: "IIA Film Coating", revision: 1, reviewDate: "2025-04-10", expiryDate: "2026-04-10" },
+                    opl: { status: "complete", docNumber: "OPL-CP-003", title: "OPL Coating Solution Prep", revision: 1, reviewDate: "2025-03-28", expiryDate: "2026-03-28" }
+                }
+            },
+            {
+                id: 4,
+                process: "Granulation",
+                roomNumber: "R104",
+                machineName: "Fluid Bed Dryer FBD-04",
+                machineType: "Fluid Bed Processor",
+                documents: {
+                    sop: { status: "complete", docNumber: "SOP-FBD-004", title: "SOP Fluid Bed Drying", revision: 3, reviewDate: "2025-08-12", expiryDate: "2026-08-12" },
+                    logbook: { status: "complete", docNumber: "LB-FBD-004", title: "Logbook FBD Operation", revision: 2, reviewDate: "2025-07-08", expiryDate: "2026-07-08" },
+                    hira: { status: "complete", docNumber: "HIRA-FBD-004", title: "HIRA Granulation Process", revision: 2, reviewDate: "2025-06-18", expiryDate: "2026-06-18" },
+                    iia: { status: "complete", docNumber: "IIA-FBD-004", title: "IIA Fluid Bed Operation", revision: 1, reviewDate: "2025-05-22", expiryDate: "2026-05-22" },
+                    opl: { status: "complete", docNumber: "OPL-FBD-004", title: "OPL Temperature Control", revision: 1, reviewDate: "2025-04-15", expiryDate: "2026-04-15" }
+                }
+            },
+            {
+                id: 5,
+                process: "Mixing",
+                roomNumber: "R105",
+                machineName: "V-Blender VB-05",
+                machineType: "V-Type Blender",
+                documents: {
+                    sop: { status: "complete", docNumber: "SOP-VB-005", title: "SOP V-Blender Operation", revision: 2, reviewDate: "2025-06-30", expiryDate: "2026-06-30" },
+                    logbook: { status: "complete", docNumber: "LB-VB-005", title: "Logbook V-Blender", revision: 1, reviewDate: "2025-08-05", expiryDate: "2026-08-05" },
+                    hira: { status: "complete", docNumber: "HIRA-VB-005", title: "HIRA Blending Process", revision: 1, reviewDate: "2025-05-12", expiryDate: "2026-05-12" },
+                    iia: { status: "complete", docNumber: "IIA-VB-005", title: "IIA Powder Blending", revision: 1, reviewDate: "2025-04-08", expiryDate: "2026-04-08" },
+                    opl: { status: "complete", docNumber: "OPL-VB-005", title: "OPL Blend Uniformity", revision: 2, reviewDate: "2025-07-22", expiryDate: "2026-07-22" }
+                }
+            },
+            {
+                id: 6,
+                process: "Packaging",
+                roomNumber: "R106",
+                machineName: "Blister Pack BP-06",
+                machineType: "Blister Packaging Machine",
+                documents: {
+                    sop: { status: "complete", docNumber: "SOP-BP-006", title: "SOP Blister Packaging", revision: 4, reviewDate: "2025-07-18", expiryDate: "2026-07-18" },
+                    logbook: { status: "complete", docNumber: "LB-BP-006", title: "Logbook Blister Pack", revision: 2, reviewDate: "2025-06-12", expiryDate: "2026-06-12" },
+                    hira: { status: "complete", docNumber: "HIRA-BP-006", title: "HIRA Packaging Process", revision: 2, reviewDate: "2025-05-28", expiryDate: "2026-05-28" },
+                    iia: { status: "complete", docNumber: "IIA-BP-006", title: "IIA Blister Packaging", revision: 1, reviewDate: "2025-04-20", expiryDate: "2026-04-20" },
+                    opl: { status: "complete", docNumber: "OPL-BP-006", title: "OPL Seal Integrity Check", revision: 1, reviewDate: "2025-03-30", expiryDate: "2026-03-30" }
+                }
+            },
+            {
+                id: 7,
+                process: "Quality Control",
+                roomNumber: "R107",
+                machineName: "HPLC System HPLC-07",
+                machineType: "High Performance Liquid Chromatography",
+                documents: {
+                    sop: { status: "complete", docNumber: "SOP-HPLC-007", title: "SOP HPLC Analysis", revision: 5, reviewDate: "2025-08-25", expiryDate: "2026-08-25" },
+                    logbook: { status: "complete", docNumber: "LB-HPLC-007", title: "Logbook HPLC System", revision: 3, reviewDate: "2025-07-14", expiryDate: "2026-07-14" },
+                    hira: { status: "complete", docNumber: "HIRA-HPLC-007", title: "HIRA Laboratory Analysis", revision: 2, reviewDate: "2025-06-08", expiryDate: "2026-06-08" },
+                    iia: { status: "complete", docNumber: "IIA-HPLC-007", title: "IIA HPLC Operation", revision: 2, reviewDate: "2025-05-16", expiryDate: "2026-05-16" },
+                    opl: { status: "complete", docNumber: "OPL-HPLC-007", title: "OPL Column Maintenance", revision: 1, reviewDate: "2025-04-12", expiryDate: "2026-04-12" }
+                }
+            },
+            {
+                id: 8,
+                process: "Dissolution Testing",
+                roomNumber: "R108",
+                machineName: "Dissolution Tester DT-08",
+                machineType: "USP Dissolution Apparatus",
+                documents: {
+                    sop: { status: "complete", docNumber: "SOP-DT-008", title: "SOP Dissolution Testing", revision: 3, reviewDate: "2025-07-05", expiryDate: "2026-07-05" },
+                    logbook: { status: "complete", docNumber: "LB-DT-008", title: "Logbook Dissolution Test", revision: 1, reviewDate: "2025-06-20", expiryDate: "2026-06-20" },
+                    hira: { status: "complete", docNumber: "HIRA-DT-008", title: "HIRA Dissolution Testing", revision: 1, reviewDate: "2025-05-25", expiryDate: "2026-05-25" },
+                    iia: { status: "complete", docNumber: "IIA-DT-008", title: "IIA Dissolution Method", revision: 1, reviewDate: "2025-04-30", expiryDate: "2026-04-30" },
+                    opl: { status: "complete", docNumber: "OPL-DT-008", title: "OPL Media Preparation", revision: 2, reviewDate: "2025-08-10", expiryDate: "2026-08-10" }
+                }
+            },
+            {
+                id: 9,
+                process: "Sterilization",
+                roomNumber: "R109",
+                machineName: "Autoclave AC-09",
+                machineType: "Steam Sterilizer",
+                documents: {
+                    sop: { status: "complete", docNumber: "SOP-AC-009", title: "SOP Autoclave Operation", revision: 2, reviewDate: "2025-06-28", expiryDate: "2026-06-28" },
+                    logbook: { status: "complete", docNumber: "LB-AC-009", title: "Logbook Autoclave", revision: 1, reviewDate: "2025-07-25", expiryDate: "2026-07-25" },
+                    hira: { status: "complete", docNumber: "HIRA-AC-009", title: "HIRA Sterilization Process", revision: 1, reviewDate: "2025-05-18", expiryDate: "2026-05-18" },
+                    iia: { status: "complete", docNumber: "IIA-AC-009", title: "IIA Steam Sterilization", revision: 1, reviewDate: "2025-04-22", expiryDate: "2026-04-22" },
+                    opl: { status: "complete", docNumber: "OPL-AC-009", title: "OPL Load Configuration", revision: 1, reviewDate: "2025-03-25", expiryDate: "2026-03-25" }
+                }
+            },
+            {
+                id: 10,
+                process: "Water Treatment",
+                roomNumber: "R110",
+                machineName: "RO System RO-10",
+                machineType: "Reverse Osmosis System",
+                documents: {
+                    sop: { status: "complete", docNumber: "SOP-RO-010", title: "SOP RO System Operation", revision: 3, reviewDate: "2025-08-15", expiryDate: "2026-08-15" },
+                    logbook: { status: "complete", docNumber: "LB-RO-010", title: "Logbook RO System", revision: 2, reviewDate: "2025-07-12", expiryDate: "2026-07-12" },
+                    hira: { status: "complete", docNumber: "HIRA-RO-010", title: "HIRA Water Treatment", revision: 2, reviewDate: "2025-06-22", expiryDate: "2026-06-22" },
+                    iia: { status: "complete", docNumber: "IIA-RO-010", title: "IIA Water Purification", revision: 1, reviewDate: "2025-05-08", expiryDate: "2026-05-08" },
+                    opl: { status: "complete", docNumber: "OPL-RO-010", title: "OPL Membrane Cleaning", revision: 1, reviewDate: "2025-04-05", expiryDate: "2026-04-05" }
+                }
+            },
+            {
+                id: 11,
+                process: "Liquid Filling",
+                roomNumber: "R111",
+                machineName: "Liquid Filler LF-11",
+                machineType: "Volumetric Liquid Filler",
+                documents: {
+                    sop: { status: "incomplete", docNumber: "SOP-LF-011", title: "SOP Liquid Filling", revision: 1, reviewDate: "2025-09-10", expiryDate: "2026-09-10" },
+                    logbook: { status: "complete", docNumber: "LB-LF-011", title: "Logbook Liquid Filler", revision: 1, reviewDate: "2025-07-28", expiryDate: "2026-07-28" },
+                    hira: { status: "incomplete", docNumber: "HIRA-LF-011", title: "HIRA Liquid Filling", revision: 0, reviewDate: "", expiryDate: "" },
+                    iia: { status: "complete", docNumber: "IIA-LF-011", title: "IIA Liquid Filling Process", revision: 1, reviewDate: "2025-05-14", expiryDate: "2026-05-14" },
+                    opl: { status: "complete", docNumber: "OPL-LF-011", title: "OPL Volume Calibration", revision: 1, reviewDate: "2025-04-18", expiryDate: "2026-04-18" }
+                }
+            },
+            {
+                id: 12,
+                process: "Labeling",
+                roomNumber: "R112",
+                machineName: "Labeling Machine LM-12",
+                machineType: "Automatic Labeler",
+                documents: {
+                    sop: { status: "complete", docNumber: "SOP-LM-012", title: "SOP Automatic Labeling", revision: 2, reviewDate: "2025-07-20", expiryDate: "2026-07-20" },
+                    logbook: { status: "incomplete", docNumber: "LB-LM-012", title: "Logbook Labeling Machine", revision: 0, reviewDate: "", expiryDate: "" },
+                    hira: { status: "complete", docNumber: "HIRA-LM-012", title: "HIRA Labeling Process", revision: 1, reviewDate: "2025-06-15", expiryDate: "2026-06-15" },
+                    iia: { status: "complete", docNumber: "IIA-LM-012", title: "IIA Label Application", revision: 1, reviewDate: "2025-05-02", expiryDate: "2026-05-02" },
+                    opl: { status: "incomplete", docNumber: "OPL-LM-012", title: "OPL Label Alignment", revision: 0, reviewDate: "", expiryDate: "" }
+                }
+            }
+        ];
+
+        const oplDatabase = [
+            { id: 1, title: "Setup Tablet Press untuk Produksi Batch Baru", oplNumber: "OPL-TP-001", revision: 3, author: "Dr. Ahmad Susanto", owner: "Supervisor Produksi Tablet", issuedDate: "2025-01-15", machineArea: "Tablet Press TP-01", oplLink: "https://docs.google.com/document/d/1example1/edit" },
+            { id: 2, title: "Kalibrasi Capsule Filler untuk Akurasi Dosis", oplNumber: "OPL-CF-002", revision: 2, author: "Apt. Budi Hartono", owner: "Teknisi Capsule Filling", issuedDate: "2025-01-20", machineArea: "Capsule Filler CF-02", oplLink: "https://docs.google.com/document/d/1example2/edit" },
+            { id: 3, title: "Troubleshooting Coating Pan - Masalah Spray Gun", oplNumber: "OPL-CP-003", revision: 1, author: "Siti Nurhaliza, S.Farm", owner: "Operator Coating", issuedDate: "2025-01-25", machineArea: "Coating Pan CP-03", oplLink: "https://docs.google.com/document/d/1example3/edit" },
+            { id: 4, title: "Optimasi Parameter FBD untuk Granulasi", oplNumber: "OPL-FBD-004", revision: 2, author: "Ir. Eko Prasetyo", owner: "Supervisor Granulasi", issuedDate: "2025-02-01", machineArea: "Fluid Bed Dryer FBD-04", oplLink: "https://docs.google.com/document/d/1example4/edit" },
+            { id: 5, title: "Teknik Blending untuk Uniformitas Campuran", oplNumber: "OPL-VB-005", revision: 1, author: "Joko Widodo, S.T", owner: "Operator V-Blender", issuedDate: "2025-02-05", machineArea: "V-Blender VB-05", oplLink: "https://docs.google.com/document/d/1example5/edit" },
+            { id: 6, title: "Kontrol Kualitas Seal Blister Pack", oplNumber: "OPL-BP-006", revision: 2, author: "Maria Sari, S.Farm", owner: "QC Packaging", issuedDate: "2025-02-10", machineArea: "Blister Pack BP-06", oplLink: "https://docs.google.com/document/d/1example6/edit" },
+            { id: 7, title: "Maintenance Rutin HPLC Column", oplNumber: "OPL-HPLC-007", revision: 3, author: "Dr. Rudi Hermawan", owner: "Analis QC", issuedDate: "2025-02-15", machineArea: "HPLC System HPLC-07", oplLink: "https://docs.google.com/document/d/1example7/edit" },
+            { id: 8, title: "Preparasi Media Dissolution Test", oplNumber: "OPL-DT-008", revision: 1, author: "Dewi Lestari, S.Si", owner: "Teknisi QC", issuedDate: "2025-02-20", machineArea: "Dissolution Tester DT-08", oplLink: "https://docs.google.com/document/d/1example8/edit" },
+            { id: 9, title: "Validasi Siklus Sterilisasi Autoclave", oplNumber: "OPL-AC-009", revision: 2, author: "Bambang Sutrisno", owner: "Supervisor Sterilisasi", issuedDate: "2025-02-25", machineArea: "Autoclave AC-09", oplLink: "https://docs.google.com/document/d/1example9/edit" },
+            { id: 10, title: "Monitoring Kualitas Air RO System", oplNumber: "OPL-RO-010", revision: 1, author: "Indra Gunawan, S.T", owner: "Teknisi Utility", issuedDate: "2025-03-01", machineArea: "RO System RO-10", oplLink: "https://docs.google.com/document/d/1example10/edit" },
+            { id: 11, title: "Kalibrasi Volume Liquid Filler", oplNumber: "OPL-LF-011", revision: 1, author: "Fitri Handayani", owner: "Operator Liquid Filling", issuedDate: "2025-03-05", machineArea: "Liquid Filler LF-11", oplLink: "https://docs.google.com/document/d/1example11/edit" },
+            { id: 12, title: "Alignment Label pada Labeling Machine", oplNumber: "OPL-LM-012", revision: 1, author: "Agus Salim", owner: "Teknisi Labeling", issuedDate: "2025-03-10", machineArea: "Labeling Machine LM-12", oplLink: "https://docs.google.com/document/d/1example12/edit" },
+            { id: 13, title: "5S Implementation di Area Produksi", oplNumber: "OPL-5S-013", revision: 2, author: "Hendra Wijaya", owner: "Production Manager", issuedDate: "2025-03-15", machineArea: "Semua Area Produksi", oplLink: "https://docs.google.com/document/d/1example13/edit" },
+            { id: 14, title: "Energy Saving Tips untuk Equipment", oplNumber: "OPL-ES-014", revision: 1, author: "Yuni Astuti, S.T", owner: "Maintenance Manager", issuedDate: "2025-03-20", machineArea: "Semua Mesin", oplLink: "https://docs.google.com/document/d/1example14/edit" },
+            { id: 15, title: "Emergency Response - Chemical Spill", oplNumber: "OPL-ERP-015", revision: 2, author: "Dr. Fitri Handayani", owner: "Safety Manager", issuedDate: "2025-03-25", machineArea: "Semua Area", oplLink: "https://docs.google.com/document/d/1example15/edit" },
+            { id: 16, title: "Change Control Process untuk Equipment", oplNumber: "OPL-CC-016", revision: 1, author: "Andi Prasetyo", owner: "Engineering Manager", issuedDate: "2025-03-30", machineArea: "Semua Mesin", oplLink: "https://docs.google.com/document/d/1example16/edit" },
+            { id: 17, title: "Cleaning Validation untuk Shared Equipment", oplNumber: "OPL-CV-017", revision: 1, author: "Sari Indrawati", owner: "Validation Manager", issuedDate: "2025-04-05", machineArea: "Multi-Product Equipment", oplLink: "https://docs.google.com/document/d/1example17/edit" },
+            { id: 18, title: "Environmental Monitoring Program", oplNumber: "OPL-EM-018", revision: 1, author: "Budi Santoso", owner: "QA Manager", issuedDate: "2025-04-10", machineArea: "Cleanroom Areas", oplLink: "https://docs.google.com/document/d/1example18/edit" }
+        ];
+
+        // Variables
+        let currentPage = 'progress';
+        let progressChart;
+        let currentCalendarDate = new Date();
+        let calendarVisible = false;
+        
+        // Configuration variables
+        let sheetsConfig = {
+            omobSheetUrl: '',
+            oplSheetUrl: '',
+            appsScriptUrl: '',
+            isConnected: false
+        };
+        
+        // Real data from Google Sheets
+        let realOMOBData = [];
+        let realOPLData = [];
+
+        // Initialize dashboard
+        function initializeDashboard() {
+            updateProgressPage();
+            updateDetailPage();
+            updateOPLPage();
+            updateLastUpdate();
+            populateIncompleteFilters();
+            renderIncompleteDocuments();
+        }
+
+        // Navigation
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('nav-active'));
+            
+            document.getElementById(page + 'Page').classList.add('active');
+            document.querySelector(`[data-page="${page}"]`).classList.add('nav-active');
+            
+            currentPage = page;
+            
+            if (page === 'progress') {
+                setTimeout(() => {
+                    createProgressChart();
+                }, 100);
+            }
+        }
+
+        // Update functions
+        function updateProgressPage() {
+            updateSummaryCards();
+            renderMachineStatus();
+            createProgressChart();
+        }
+
+        function updateSummaryCards() {
+            const currentData = getCurrentOMOBData();
+            const totalMachines = currentData.length;
+            const completeMachines = currentData.filter(machine => {
+                const docs = Object.values(machine.documents);
+                return docs.filter(doc => doc.status === 'complete').length === 5;
+            }).length;
+            const incompleteMachines = totalMachines - completeMachines;
+            
+            // Calculate expiring SOPs (within 30 days)
+            const today = new Date();
+            const thirtyDaysFromNow = new Date(today.getTime() + (30 * 24 * 60 * 60 * 1000));
+            
+            let expiringSOP = 0;
+            currentData.forEach(machine => {
+                Object.values(machine.documents).forEach(doc => {
+                    if (doc.status === 'complete' && doc.expiryDate) {
+                        const expiryDate = new Date(doc.expiryDate);
+                        if (expiryDate <= thirtyDaysFromNow && expiryDate >= today) {
+                            expiringSOP++;
+                        }
+                    }
+                });
+            });
+
+            document.getElementById('totalMachines').textContent = totalMachines;
+            document.getElementById('completeMachines').textContent = completeMachines;
+            document.getElementById('incompleteMachines').textContent = incompleteMachines;
+            document.getElementById('expiringSOP').textContent = expiringSOP;
+        }
+
+        function renderMachineStatus() {
+            const container = document.getElementById('machineStatusList');
+            const currentData = getCurrentOMOBData();
+            
+            container.innerHTML = currentData.map(machine => {
+                const completedDocs = Object.values(machine.documents).filter(doc => doc.status === 'complete').length;
+                const progressPercentage = (completedDocs / 5) * 100;
+                const isComplete = completedDocs === 5;
+
+                return `
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">${machine.machineName}</h4>
+                                <p class="text-sm text-gray-500">${machine.machineType} • Ruangan ${machine.roomNumber}</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-1 rounded-full text-xs font-medium ${isComplete ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'}">
+                                    ${completedDocs}/5 Dokumen
+                                </span>
+                                <button onclick="showMachineDetail(${machine.id})" class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors text-xs font-medium">
+                                    Detail
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">Progress</span>
+                                <span class="font-medium">${Math.round(progressPercentage)}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="h-2 rounded-full ${isComplete ? 'bg-green-500' : 'bg-yellow-500'}" style="width: ${progressPercentage}%"></div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            ${Object.entries(machine.documents).map(([docType, doc]) => `
+                                <span class="px-2 py-1 rounded text-xs font-medium ${doc.status === 'complete' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
+                                    ${docType.toUpperCase()}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function createProgressChart() {
+            const ctx = document.getElementById('progressChart');
+            if (!ctx) return;
+            
+            const currentData = getCurrentOMOBData();
+            const totalDocs = currentData.length * 5;
+            const completedDocs = currentData.reduce((total, machine) => {
+                return total + Object.values(machine.documents).filter(doc => doc.status === 'complete').length;
+            }, 0);
+            const progressPercentage = Math.round((completedDocs / totalDocs) * 100);
+
+            document.getElementById('overallProgress').textContent = `${progressPercentage}%`;
+
+            if (progressChart) {
+                progressChart.destroy();
+            }
+
+            progressChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [completedDocs, totalDocs - completedDocs],
+                        backgroundColor: ['#10B981', '#E5E7EB'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateDetailPage() {
+            renderExpiringSOP();
+            renderDetailDocuments();
+        }
+
+        function renderDetailDocuments() {
+            const container = document.getElementById('detailDocumentList');
+            const currentData = getCurrentOMOBData();
+            
+            container.innerHTML = currentData.map(machine => {
+                const completedDocs = Object.values(machine.documents).filter(doc => doc.status === 'complete').length;
+                const progressPercentage = (completedDocs / 5) * 100;
+
+                return `
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-800">${machine.machineName}</h4>
+                                <p class="text-sm text-gray-600">${machine.process} • ${machine.machineType} • Ruangan ${machine.roomNumber}</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-gray-800">${Math.round(progressPercentage)}%</div>
+                                <div class="text-sm text-gray-500">${completedDocs}/5 Dokumen</div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                            ${Object.entries(machine.documents).map(([docType, doc]) => `
+                                <div class="border rounded-lg p-3 ${doc.status === 'complete' ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-medium ${doc.status === 'complete' ? 'text-green-600' : 'text-red-600'}">
+                                            ${docType.toUpperCase()}
+                                        </span>
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium ${doc.status === 'complete' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
+                                            ${doc.status === 'complete' ? '✓' : '✗'}
+                                        </span>
+                                    </div>
+                                    <div class="text-xs text-gray-600 space-y-1">
+                                        <div><strong>No:</strong> ${doc.docNumber || 'Belum ada'}</div>
+                                        <div><strong>Judul:</strong> ${doc.title || 'Belum ada'}</div>
+                                        <div><strong>Rev:</strong> ${doc.revision || 0}</div>
+                                        <div><strong>Review:</strong> ${doc.reviewDate || 'Belum ada'}</div>
+                                        ${doc.expiryDate ? `<div><strong>Expired:</strong> ${doc.expiryDate}</div>` : ''}
+                                        ${doc.status === 'complete' && doc.expiryDate ? (() => {
+                                            const today = new Date();
+                                            const expiryDate = new Date(doc.expiryDate);
+                                            const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+                                            if (daysUntilExpiry <= 30 && daysUntilExpiry > 0) {
+                                                return `<div class="text-red-600 font-semibold">⚠️ Expires in ${daysUntilExpiry} days</div>`;
+                                            } else if (daysUntilExpiry <= 0) {
+                                                return `<div class="text-red-700 font-bold">🚨 EXPIRED</div>`;
+                                            }
+                                            return '';
+                                        })() : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateOPLPage() {
+            updateOPLSummaryCards();
+            populateMachineFilter();
+            renderOPLTable();
+        }
+
+        function updateOPLSummaryCards() {
+            const currentData = getCurrentOPLData();
+            const totalOPL = currentData.length;
+            const uniqueMachines = [...new Set(currentData.map(opl => opl.machineArea))].length;
+            const avgOPLPerMachine = uniqueMachines > 0 ? Math.round(totalOPL / uniqueMachines * 10) / 10 : 0;
+
+            document.getElementById('totalOPL').textContent = totalOPL;
+            document.getElementById('totalMachinesOPL').textContent = uniqueMachines;
+            document.getElementById('avgOPLPerMachine').textContent = avgOPLPerMachine;
+        }
+
+        function renderOPLTable() {
+            const tbody = document.getElementById('oplTableBody');
+            const currentData = getCurrentOPLData();
+
+            tbody.innerHTML = currentData.map((opl, index) => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${index + 1}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${opl.title}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${opl.oplNumber}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${opl.revision}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${opl.author}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${opl.owner}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${opl.issuedDate}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${opl.machineArea}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <button onclick="readOPL('${opl.id}')" class="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors text-xs font-medium">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                            Read OPL
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Utility Functions
+        function readOPL(oplId) {
+            const currentData = getCurrentOPLData();
+            const opl = currentData.find(o => o.id == oplId);
+            if (opl && opl.oplLink) {
+                window.open(opl.oplLink, '_blank');
+            }
+        }
+
+        function populateMachineFilter() {
+            const machineFilter = document.getElementById('machineFilter');
+            const currentData = getCurrentOPLData();
+            const uniqueMachines = [...new Set(currentData.map(opl => opl.machineArea))].sort();
+            
+            // Clear existing options except the first one
+            machineFilter.innerHTML = '<option value="">Semua Mesin/Area</option>';
+            
+            uniqueMachines.forEach(machine => {
+                const option = document.createElement('option');
+                option.value = machine;
+                option.textContent = machine;
+                machineFilter.appendChild(option);
+            });
+        }
+
+        function filterOPL() {
+            const searchTerm = document.getElementById('oplSearch').value.toLowerCase();
+            const selectedMachine = document.getElementById('machineFilter').value;
+            const currentData = getCurrentOPLData();
+            
+            let filteredData = currentData;
+            
+            // Filter by search term
+            if (searchTerm) {
+                filteredData = filteredData.filter(opl => 
+                    opl.title.toLowerCase().includes(searchTerm) ||
+                    opl.oplNumber.toLowerCase().includes(searchTerm) ||
+                    opl.author.toLowerCase().includes(searchTerm) ||
+                    opl.owner.toLowerCase().includes(searchTerm) ||
+                    opl.machineArea.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Filter by machine
+            if (selectedMachine) {
+                filteredData = filteredData.filter(opl => opl.machineArea === selectedMachine);
+            }
+            
+            renderFilteredOPLTable(filteredData);
+        }
+
+        function renderFilteredOPLTable(data) {
+            const tbody = document.getElementById('oplTableBody');
+
+            tbody.innerHTML = data.map((opl, index) => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${index + 1}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${opl.title}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${opl.oplNumber}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${opl.revision}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${opl.author}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${opl.owner}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${opl.issuedDate}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${opl.machineArea}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <button onclick="readOPL('${opl.id}')" class="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors text-xs font-medium">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                            Read OPL
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function exportOPLData() {
+            const searchTerm = document.getElementById('oplSearch').value.toLowerCase();
+            const selectedMachine = document.getElementById('machineFilter').value;
+            const currentData = getCurrentOPLData();
+            
+            let dataToExport = currentData;
+            
+            // Apply same filters as the table
+            if (searchTerm) {
+                dataToExport = dataToExport.filter(opl => 
+                    opl.title.toLowerCase().includes(searchTerm) ||
+                    opl.oplNumber.toLowerCase().includes(searchTerm) ||
+                    opl.author.toLowerCase().includes(searchTerm) ||
+                    opl.owner.toLowerCase().includes(searchTerm) ||
+                    opl.machineArea.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (selectedMachine) {
+                dataToExport = dataToExport.filter(opl => opl.machineArea === selectedMachine);
+            }
+            
+            // Create CSV content
+            const headers = ['No', 'Judul OPL', 'Nomor OPL', 'Rev', 'Penyusun', 'OPL Owner', 'Issued Date', 'Mesin/Area'];
+            const csvContent = [
+                headers.join(','),
+                ...dataToExport.map((opl, index) => [
+                    index + 1,
+                    `"${opl.title}"`,
+                    opl.oplNumber,
+                    opl.revision,
+                    `"${opl.author}"`,
+                    `"${opl.owner}"`,
+                    opl.issuedDate,
+                    `"${opl.machineArea}"`
+                ].join(','))
+            ].join('\n');
+            
+            // Create and download file
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `OPL_Database_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function updateLastUpdate() {
+            const now = new Date();
+            const timeString = now.toLocaleString('id-ID', {
+                day: '2-digit',
+                month: '2-digit', 
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('lastUpdate').textContent = timeString;
+        }
+
+        function refreshDashboard() {
+            updateProgressPage();
+            updateDetailPage();
+            updateOPLPage();
+            updateLastUpdate();
+        }
+
+        // Multi-select filter variables
+        let selectedMachines = [];
+        let selectedRooms = [];
+
+        // Incomplete Documents Functions
+        function populateIncompleteFilters() {
+            const currentData = getCurrentOMOBData();
+            const uniqueMachines = [...new Set(currentData.map(machine => machine.machineName))].sort();
+            const uniqueRooms = [...new Set(currentData.map(machine => machine.roomNumber))].sort();
+            
+            // Populate machine filter options
+            const machineOptions = document.getElementById('machineFilterOptions');
+            machineOptions.innerHTML = uniqueMachines.map(machine => `
+                <label class="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded">
+                    <input type="checkbox" value="${machine}" onchange="updateMachineFilter()">
+                    <span class="text-sm">${machine}</span>
+                </label>
+            `).join('');
+            
+            // Populate room filter options
+            const roomOptions = document.getElementById('roomFilterOptions');
+            roomOptions.innerHTML = uniqueRooms.map(room => `
+                <label class="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded">
+                    <input type="checkbox" value="${room}" onchange="updateRoomFilter()">
+                    <span class="text-sm">${room}</span>
+                </label>
+            `).join('');
+        }
+
+        function toggleMachineFilter() {
+            const dropdown = document.getElementById('machineFilterDropdown');
+            dropdown.classList.toggle('hidden');
+            
+            // Close room filter if open
+            document.getElementById('roomFilterDropdown').classList.add('hidden');
+        }
+
+        function toggleRoomFilter() {
+            const dropdown = document.getElementById('roomFilterDropdown');
+            dropdown.classList.toggle('hidden');
+            
+            // Close machine filter if open
+            document.getElementById('machineFilterDropdown').classList.add('hidden');
+        }
+
+        function updateMachineFilter() {
+            const checkboxes = document.querySelectorAll('#machineFilterOptions input[type="checkbox"]');
+            const selectAllCheckbox = document.querySelector('#machineFilterDropdown input[value=""]');
+            
+            selectedMachines = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            
+            // Update select all checkbox
+            selectAllCheckbox.checked = selectedMachines.length === 0;
+            
+            // Update button text
+            const buttonText = document.getElementById('machineFilterText');
+            if (selectedMachines.length === 0) {
+                buttonText.textContent = 'Semua Mesin';
+            } else if (selectedMachines.length === 1) {
+                buttonText.textContent = selectedMachines[0];
+            } else {
+                buttonText.textContent = `${selectedMachines.length} Mesin Dipilih`;
+            }
+            
+            // If select all is checked, uncheck all individual options
+            if (selectAllCheckbox.checked) {
+                checkboxes.forEach(cb => cb.checked = false);
+                selectedMachines = [];
+            }
+            
+            filterIncompleteDocuments();
+        }
+
+        function updateRoomFilter() {
+            const checkboxes = document.querySelectorAll('#roomFilterOptions input[type="checkbox"]');
+            const selectAllCheckbox = document.querySelector('#roomFilterDropdown input[value=""]');
+            
+            selectedRooms = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            
+            // Update select all checkbox
+            selectAllCheckbox.checked = selectedRooms.length === 0;
+            
+            // Update button text
+            const buttonText = document.getElementById('roomFilterText');
+            if (selectedRooms.length === 0) {
+                buttonText.textContent = 'Semua Ruangan';
+            } else if (selectedRooms.length === 1) {
+                buttonText.textContent = selectedRooms[0];
+            } else {
+                buttonText.textContent = `${selectedRooms.length} Ruangan Dipilih`;
+            }
+            
+            // If select all is checked, uncheck all individual options
+            if (selectAllCheckbox.checked) {
+                checkboxes.forEach(cb => cb.checked = false);
+                selectedRooms = [];
+            }
+            
+            filterIncompleteDocuments();
+        }
+
+        function getIncompleteDocuments() {
+            const incompleteList = [];
+            const currentData = getCurrentOMOBData();
+            
+            currentData.forEach(machine => {
+                Object.entries(machine.documents).forEach(([docType, doc]) => {
+                    if (doc.status === 'incomplete') {
+                        incompleteList.push({
+                            jenisDoc: docType.toUpperCase(),
+                            namaDoc: doc.title || `${docType.toUpperCase()} ${machine.machineName}`,
+                            docNumber: doc.docNumber || 'Belum ada',
+                            machineName: machine.machineName,
+                            roomNumber: machine.roomNumber,
+                            revision: doc.revision || 0,
+                            status: 'Belum Lengkap'
+                        });
+                    }
+                });
+            });
+            
+            return incompleteList;
+        }
+
+        function filterIncompleteDocuments() {
+            let filteredData = getIncompleteDocuments();
+            
+            // Filter by selected machines
+            if (selectedMachines.length > 0) {
+                filteredData = filteredData.filter(doc => selectedMachines.includes(doc.machineName));
+            }
+            
+            // Filter by selected rooms
+            if (selectedRooms.length > 0) {
+                filteredData = filteredData.filter(doc => selectedRooms.includes(doc.roomNumber));
+            }
+            
+            renderFilteredIncompleteDocuments(filteredData);
+        }
+
+        function renderIncompleteDocuments() {
+            const incompleteData = getIncompleteDocuments();
+            renderFilteredIncompleteDocuments(incompleteData);
+        }
+
+        function renderFilteredIncompleteDocuments(data) {
+            const tbody = document.getElementById('incompleteDocumentsTable');
+            
+            tbody.innerHTML = data.map(doc => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${doc.jenisDoc}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${doc.namaDoc}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${doc.docNumber}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${doc.machineName}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${doc.roomNumber}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rev ${doc.revision}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs font-medium bg-red-100 text-red-600 rounded-full">
+                            ${doc.status}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const machineFilter = document.getElementById('machineFilterDropdown');
+            const roomFilter = document.getElementById('roomFilterDropdown');
+            const machineBtn = document.getElementById('machineFilterBtn');
+            const roomBtn = document.getElementById('roomFilterBtn');
+            
+            if (!machineBtn.contains(event.target) && !machineFilter.contains(event.target)) {
+                machineFilter.classList.add('hidden');
+            }
+            
+            if (!roomBtn.contains(event.target) && !roomFilter.contains(event.target)) {
+                roomFilter.classList.add('hidden');
+            }
+        });
+
+        function exportIncompleteDocuments(format) {
+            let dataToExport = getIncompleteDocuments();
+            
+            // Apply current filters
+            if (selectedMachines.length > 0) {
+                dataToExport = dataToExport.filter(doc => selectedMachines.includes(doc.machineName));
+            }
+            
+            if (selectedRooms.length > 0) {
+                dataToExport = dataToExport.filter(doc => selectedRooms.includes(doc.roomNumber));
+            }
+            
+            if (format === 'excel') {
+                exportToExcel(dataToExport);
+            } else if (format === 'pdf') {
+                exportToPDF(dataToExport);
+            }
+        }
+
+        function exportToExcel(data) {
+            const headers = ['Jenis Dokumen', 'Nama Dokumen', 'Nomor Dokumen', 'Mesin', 'Ruangan', 'Revisi', 'Status'];
+            const csvContent = [
+                headers.join(','),
+                ...data.map(doc => [
+                    `"${doc.jenisDoc}"`,
+                    `"${doc.namaDoc}"`,
+                    `"${doc.docNumber}"`,
+                    `"${doc.machineName}"`,
+                    `"${doc.roomNumber}"`,
+                    `Rev ${doc.revision}`,
+                    `"${doc.status}"`
+                ].join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `Dokumen_Belum_Lengkap_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function exportToPDF(data) {
+            // Create a simple HTML content for PDF export
+            const htmlContent = `
+                <html>
+                <head>
+                    <title>Dokumen Belum Lengkap</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        h1 { color: #333; text-align: center; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+                        th, td { border: 1px solid #ddd; padding: 6px; text-align: left; }
+                        th { background-color: #f2f2f2; font-weight: bold; }
+                        .date { text-align: right; margin-bottom: 20px; color: #666; }
+                        .filter-info { margin-bottom: 15px; padding: 10px; background-color: #f9f9f9; border-radius: 5px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="date">Tanggal: ${new Date().toLocaleDateString('id-ID')}</div>
+                    <h1>Laporan Dokumen Belum Lengkap</h1>
+                    <div class="filter-info">
+                        <strong>Filter yang Diterapkan:</strong><br>
+                        Mesin: ${selectedMachines.length > 0 ? selectedMachines.join(', ') : 'Semua Mesin'}<br>
+                        Ruangan: ${selectedRooms.length > 0 ? selectedRooms.join(', ') : 'Semua Ruangan'}
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Jenis Dokumen</th>
+                                <th>Nama Dokumen</th>
+                                <th>Nomor Dokumen</th>
+                                <th>Mesin</th>
+                                <th>Ruangan</th>
+                                <th>Revisi</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.map((doc, index) => `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${doc.jenisDoc}</td>
+                                    <td>${doc.namaDoc}</td>
+                                    <td>${doc.docNumber}</td>
+                                    <td>${doc.machineName}</td>
+                                    <td>${doc.roomNumber}</td>
+                                    <td>Rev ${doc.revision}</td>
+                                    <td>${doc.status}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 20px; text-align: center; color: #666; font-size: 10px;">
+                        Total: ${data.length} dokumen belum lengkap
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            // Open in new window for printing/saving as PDF
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(htmlContent);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+            }, 250);
+        }
+
+        // Expiring SOP Functions
+        function getExpiringSOP(daysAhead = 90) {
+            const today = new Date();
+            const futureDate = new Date(today.getTime() + (daysAhead * 24 * 60 * 60 * 1000));
+            const expiringList = [];
+            const currentData = getCurrentOMOBData();
+            
+            currentData.forEach(machine => {
+                Object.entries(machine.documents).forEach(([docType, doc]) => {
+                    if (doc.status === 'complete' && doc.expiryDate) {
+                        const expiryDate = new Date(doc.expiryDate);
+                        if (expiryDate <= futureDate && expiryDate >= today) {
+                            const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+                            let statusClass = 'bg-blue-100 text-blue-600';
+                            let statusText = 'Normal';
+                            
+                            if (daysUntilExpiry <= 7) {
+                                statusClass = 'bg-red-100 text-red-600';
+                                statusText = 'Urgent';
+                            } else if (daysUntilExpiry <= 30) {
+                                statusClass = 'bg-yellow-100 text-yellow-600';
+                                statusText = 'Perhatian';
+                            }
+                            
+                            expiringList.push({
+                                machineName: machine.machineName,
+                                docType: docType.toUpperCase(),
+                                docNumber: doc.docNumber,
+                                expiryDate: doc.expiryDate,
+                                daysUntilExpiry: daysUntilExpiry,
+                                statusClass: statusClass,
+                                statusText: statusText
+                            });
+                        }
+                    }
+                });
+            });
+            
+            return expiringList.sort((a, b) => a.daysUntilExpiry - b.daysUntilExpiry);
+        }
+
+        function filterExpiringSOP() {
+            const daysAhead = parseInt(document.getElementById('expiryDaysFilter').value);
+            const expiringData = getExpiringSOP(daysAhead);
+            renderFilteredExpiringSOP(expiringData);
+        }
+
+        function renderExpiringSOP() {
+            const expiringData = getExpiringSOP(90);
+            renderFilteredExpiringSOP(expiringData);
+        }
+
+        function renderFilteredExpiringSOP(data) {
+            const tbody = document.getElementById('expiringSOPTable');
+            
+            tbody.innerHTML = data.map(sop => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${sop.machineName}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${sop.docType}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${sop.docNumber}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${sop.expiryDate}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${sop.daysUntilExpiry} hari</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full ${sop.statusClass}">
+                            ${sop.statusText}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Calendar Functions
+        function toggleSOPCalendar() {
+            const calendar = document.getElementById('sopCalendar');
+            const toggleBtn = document.getElementById('calendarToggleBtn');
+            
+            calendarVisible = !calendarVisible;
+            
+            if (calendarVisible) {
+                calendar.classList.remove('hidden');
+                toggleBtn.innerHTML = `
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>Sembunyikan Kalender</span>
+                `;
+                renderSOPCalendar();
+            } else {
+                calendar.classList.add('hidden');
+                toggleBtn.innerHTML = `
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>Tampilkan Kalender</span>
+                `;
+            }
+        }
+
+        function changeCalendarMonth(direction) {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+            renderSOPCalendar();
+        }
+
+        function renderSOPCalendar() {
+            const calendarTitle = document.getElementById('calendarTitle');
+            const calendarGrid = document.getElementById('calendarGrid');
+            
+            const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                              'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            calendarTitle.textContent = `${monthNames[currentCalendarDate.getMonth()]} ${currentCalendarDate.getFullYear()}`;
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), 1);
+            const lastDay = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+            
+            // Get expiring SOPs for this month
+            const expiringSOPs = getExpiringSOP(90);
+            const sopsByDate = {};
+            
+            expiringSOPs.forEach(sop => {
+                const date = sop.expiryDate;
+                if (!sopsByDate[date]) {
+                    sopsByDate[date] = [];
+                }
+                sopsByDate[date].push(sop);
+            });
+            
+            // Generate calendar grid
+            let calendarHTML = '';
+            
+            // Day headers
+            const dayHeaders = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            dayHeaders.forEach(day => {
+                calendarHTML += `<div class="p-2 text-center text-sm font-medium text-gray-500">${day}</div>`;
+            });
+            
+            // Calendar days
+            const currentDate = new Date(startDate);
+            for (let i = 0; i < 42; i++) {
+                const dateStr = currentDate.toISOString().split('T')[0];
+                const isCurrentMonth = currentDate.getMonth() === currentCalendarDate.getMonth();
+                const isToday = dateStr === new Date().toISOString().split('T')[0];
+                const hasSOP = sopsByDate[dateStr];
+                
+                let cellClass = 'p-2 text-center text-sm border border-gray-100 min-h-[40px] relative';
+                if (!isCurrentMonth) {
+                    cellClass += ' text-gray-300';
+                }
+                if (isToday) {
+                    cellClass += ' bg-blue-50 font-bold';
+                }
+                
+                let sopIndicator = '';
+                if (hasSOP && isCurrentMonth) {
+                    const urgentCount = hasSOP.filter(s => s.daysUntilExpiry <= 7).length;
+                    const warningCount = hasSOP.filter(s => s.daysUntilExpiry <= 30 && s.daysUntilExpiry > 7).length;
+                    const normalCount = hasSOP.filter(s => s.daysUntilExpiry > 30).length;
+                    
+                    if (urgentCount > 0) {
+                        sopIndicator = `<div class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></div>`;
+                        cellClass += ' bg-red-100';
+                    } else if (warningCount > 0) {
+                        sopIndicator = `<div class="absolute top-1 right-1 w-2 h-2 bg-yellow-500 rounded-full"></div>`;
+                        cellClass += ' bg-yellow-100';
+                    } else if (normalCount > 0) {
+                        sopIndicator = `<div class="absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full"></div>`;
+                        cellClass += ' bg-blue-100';
+                    }
+                }
+                
+                calendarHTML += `
+                    <div class="${cellClass}" title="${hasSOP ? hasSOP.map(s => `${s.machineName} - ${s.docType}`).join(', ') : ''}">
+                        ${currentDate.getDate()}
+                        ${sopIndicator}
+                    </div>
+                `;
+                
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            calendarGrid.innerHTML = calendarHTML;
+        }
+
+        // Machine Detail Functions
+        function showMachineDetail(machineId) {
+            const machine = omobData.find(m => m.id === machineId);
+            if (!machine) return;
+            
+            const modal = document.getElementById('machineDetailModal');
+            const title = document.getElementById('modalMachineTitle');
+            const content = document.getElementById('modalMachineContent');
+            
+            title.textContent = `Detail Dokumen - ${machine.machineName}`;
+            
+            content.innerHTML = `
+                <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-600">Nama Mesin</p>
+                            <p class="font-semibold text-gray-800">${machine.machineName}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Tipe Mesin</p>
+                            <p class="font-semibold text-gray-800">${machine.machineType}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Proses</p>
+                            <p class="font-semibold text-gray-800">${machine.process}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Ruangan</p>
+                            <p class="font-semibold text-gray-800">${machine.roomNumber}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Dokumen yang Dimiliki</h4>
+                <div class="grid grid-cols-1 gap-4">
+                    ${Object.entries(machine.documents).map(([docType, doc]) => `
+                        <div class="border rounded-lg p-4 ${doc.status === 'complete' ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h5 class="font-semibold text-gray-800">${docType.toUpperCase()}</h5>
+                                    <p class="text-sm text-gray-600">${doc.title || 'Belum ada judul'}</p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-sm font-medium ${doc.status === 'complete' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
+                                    ${doc.status === 'complete' ? 'Lengkap' : 'Belum Lengkap'}
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                                <div>
+                                    <p class="text-gray-500">No Dokumen</p>
+                                    <p class="font-medium">${doc.docNumber || 'Belum ada'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500">Revisi</p>
+                                    <p class="font-medium">${doc.revision || 0}</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500">Review Date</p>
+                                    <p class="font-medium">${doc.reviewDate || 'Belum ada'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500">Expiry Date</p>
+                                    <p class="font-medium">${doc.expiryDate || 'Belum ada'}</p>
+                                </div>
+                            </div>
+                            ${doc.status === 'complete' && doc.expiryDate ? (() => {
+                                const today = new Date();
+                                const expiryDate = new Date(doc.expiryDate);
+                                const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+                                if (daysUntilExpiry <= 30 && daysUntilExpiry > 0) {
+                                    return `<div class="mt-3 p-2 bg-yellow-100 border border-yellow-300 rounded text-sm text-yellow-700">
+                                        ⚠️ Akan expired dalam ${daysUntilExpiry} hari
+                                    </div>`;
+                                } else if (daysUntilExpiry <= 0) {
+                                    return `<div class="mt-3 p-2 bg-red-100 border border-red-300 rounded text-sm text-red-700">
+                                        🚨 SUDAH EXPIRED
+                                    </div>`;
+                                }
+                                return '';
+                            })() : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
+        
+        function closeMachineDetail() {
+            document.getElementById('machineDetailModal').classList.add('hidden');
+        }
+
+        // Configuration Functions
+        function openConfigModal() {
+            document.getElementById('configModal').classList.remove('hidden');
+            loadSavedConfiguration();
+        }
+        
+        function closeConfigModal() {
+            document.getElementById('configModal').classList.add('hidden');
+        }
+        
+        function loadSavedConfiguration() {
+            const savedConfig = localStorage.getItem('omobSheetsConfig');
+            if (savedConfig) {
+                sheetsConfig = JSON.parse(savedConfig);
+                document.getElementById('omobSheetUrl').value = sheetsConfig.omobSheetUrl || '';
+                document.getElementById('oplSheetUrl').value = sheetsConfig.oplSheetUrl || '';
+                document.getElementById('appsScriptUrl').value = sheetsConfig.appsScriptUrl || '';
+                updateConnectionStatus();
+            }
+        }
+        
+        function copyAppsScriptCode() {
+            const codeElement = document.getElementById('appsScriptCode');
+            const textArea = document.createElement('textarea');
+            textArea.value = codeElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            showNotification('Kode Apps Script berhasil disalin!', 'success');
+        }
+        
+        function saveConfiguration() {
+            const omobUrl = document.getElementById('omobSheetUrl').value.trim();
+            const oplUrl = document.getElementById('oplSheetUrl').value.trim();
+            const appsScriptUrl = document.getElementById('appsScriptUrl').value.trim();
+            
+            // If Apps Script URL is provided, it takes priority
+            if (appsScriptUrl) {
+                sheetsConfig.appsScriptUrl = appsScriptUrl;
+                sheetsConfig.omobSheetUrl = omobUrl;
+                sheetsConfig.oplSheetUrl = oplUrl;
+            } else {
+                if (!omobUrl || !oplUrl) {
+                    showNotification('Harap isi kedua URL spreadsheet atau URL Apps Script!', 'error');
+                    return;
+                }
+                sheetsConfig.omobSheetUrl = omobUrl;
+                sheetsConfig.oplSheetUrl = oplUrl;
+                sheetsConfig.appsScriptUrl = '';
+            }
+            
+            localStorage.setItem('omobSheetsConfig', JSON.stringify(sheetsConfig));
+            showNotification('Konfigurasi berhasil disimpan!', 'success');
+            
+            // Test connection after saving
+            testConnection();
+        }
+        
+        async function testConnection() {
+            const testResults = document.getElementById('testResults');
+            testResults.classList.remove('hidden');
+            testResults.innerHTML = `
+                <div class="flex items-center space-x-2 text-blue-600">
+                    <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Testing koneksi...</span>
+                </div>
+            `;
+            
+            try {
+                let omobTest, oplTest;
+                
+                // Test Apps Script first if available
+                if (sheetsConfig.appsScriptUrl) {
+                    omobTest = await testAppsScriptConnection(sheetsConfig.appsScriptUrl, 'OMOB');
+                    oplTest = await testAppsScriptConnection(sheetsConfig.appsScriptUrl, 'OPL');
+                } else {
+                    omobTest = await testSheetConnection(sheetsConfig.omobSheetUrl, 'OMOB');
+                    oplTest = await testSheetConnection(sheetsConfig.oplSheetUrl, 'OPL');
+                }
+                
+                let resultsHTML = '<div class="space-y-3">';
+                
+                // Connection Method Info
+                resultsHTML += `
+                    <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p class="text-sm font-medium text-blue-800">
+                            Metode Koneksi: ${sheetsConfig.appsScriptUrl ? 'Google Apps Script' : 'Direct CSV Export'}
+                        </p>
+                    </div>
+                `;
+                
+                // OMOB Test Result
+                resultsHTML += `
+                    <div class="flex items-center space-x-3 p-3 rounded-lg ${omobTest.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}">
+                        <div class="w-4 h-4 rounded-full ${omobTest.success ? 'bg-green-500' : 'bg-red-500'}"></div>
+                        <div>
+                            <p class="font-medium ${omobTest.success ? 'text-green-800' : 'text-red-800'}">
+                                OMOB Data: ${omobTest.success ? 'Berhasil' : 'Gagal'}
+                            </p>
+                            <p class="text-sm ${omobTest.success ? 'text-green-600' : 'text-red-600'}">
+                                ${omobTest.message}
+                            </p>
+                        </div>
+                    </div>
+                `;
+                
+                // OPL Test Result
+                resultsHTML += `
+                    <div class="flex items-center space-x-3 p-3 rounded-lg ${oplTest.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}">
+                        <div class="w-4 h-4 rounded-full ${oplTest.success ? 'bg-green-500' : 'bg-red-500'}"></div>
+                        <div>
+                            <p class="font-medium ${oplTest.success ? 'text-green-800' : 'text-red-800'}">
+                                OPL Data: ${oplTest.success ? 'Berhasil' : 'Gagal'}
+                            </p>
+                            <p class="text-sm ${oplTest.success ? 'text-green-600' : 'text-red-600'}">
+                                ${oplTest.message}
+                            </p>
+                        </div>
+                    </div>
+                `;
+                
+                resultsHTML += '</div>';
+                testResults.innerHTML = resultsHTML;
+                
+                // Update connection status
+                sheetsConfig.isConnected = omobTest.success && oplTest.success;
+                localStorage.setItem('omobSheetsConfig', JSON.stringify(sheetsConfig));
+                updateConnectionStatus();
+                
+                if (sheetsConfig.isConnected) {
+                    showNotification('Koneksi berhasil! Dashboard akan menggunakan data real dari spreadsheet.', 'success');
+                    // Load real data
+                    await loadRealData();
+                    // Refresh dashboard with real data
+                    refreshDashboard();
+                } else {
+                    showNotification('Koneksi gagal. Dashboard akan menggunakan data demo.', 'warning');
+                }
+                
+            } catch (error) {
+                testResults.innerHTML = `
+                    <div class="p-3 bg-red-50 border border-red-200 rounded-lg">
+                        <p class="text-red-800 font-medium">Error saat testing koneksi:</p>
+                        <p class="text-red-600 text-sm">${error.message}</p>
+                    </div>
+                `;
+                sheetsConfig.isConnected = false;
+                updateConnectionStatus();
+            }
+        }
+        
+        async function testAppsScriptConnection(appsScriptUrl, dataType) {
+            if (!appsScriptUrl) {
+                return { success: false, message: 'Apps Script URL tidak boleh kosong' };
+            }
+            
+            try {
+                const action = dataType === 'OMOB' ? 'getOMOBData' : 'getOPLData';
+                const response = await fetch(`${appsScriptUrl}?action=${action}`);
+                
+                if (!response.ok) {
+                    return { 
+                        success: false, 
+                        message: `HTTP ${response.status}: Pastikan Apps Script sudah di-deploy dengan benar` 
+                    };
+                }
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    return { 
+                        success: false, 
+                        message: `Apps Script Error: ${result.error}` 
+                    };
+                }
+                
+                if (!result.success || !result.data) {
+                    return { 
+                        success: false, 
+                        message: 'Format response tidak valid dari Apps Script' 
+                    };
+                }
+                
+                return { 
+                    success: true, 
+                    message: `Berhasil membaca ${result.data.length} record data ${dataType}` 
+                };
+                
+            } catch (error) {
+                return { 
+                    success: false, 
+                    message: `Error: ${error.message}` 
+                };
+            }
+        }
+        
+        async function testSheetConnection(url, type) {
+            if (!url) {
+                return { success: false, message: 'URL tidak boleh kosong' };
+            }
+            
+            try {
+                const csvUrl = convertToCSVUrl(url);
+                const response = await fetch(csvUrl);
+                
+                if (!response.ok) {
+                    return { 
+                        success: false, 
+                        message: `HTTP ${response.status}: Pastikan spreadsheet sudah dibuat publik` 
+                    };
+                }
+                
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
+                
+                if (rows.length < 2) {
+                    return { 
+                        success: false, 
+                        message: 'Spreadsheet kosong atau tidak memiliki data' 
+                    };
+                }
+                
+                // Validate headers based on type
+                const headers = rows[0];
+                let expectedHeaders = [];
+                
+                if (type === 'OMOB') {
+                    expectedHeaders = ['Proses', 'No. Ruangan', 'Nama Mesin', 'Jenis Mesin'];
+                } else if (type === 'OPL') {
+                    expectedHeaders = ['Judul OPL', 'Nomor OPL', 'Rev', 'Penyusun'];
+                }
+                
+                const hasRequiredHeaders = expectedHeaders.every(header => 
+                    headers.some(h => h.toLowerCase().includes(header.toLowerCase().replace('.', '').replace(' ', '')))
+                );
+                
+                if (!hasRequiredHeaders) {
+                    return { 
+                        success: false, 
+                        message: `Format header tidak sesuai. Pastikan ada kolom: ${expectedHeaders.join(', ')}` 
+                    };
+                }
+                
+                return { 
+                    success: true, 
+                    message: `Berhasil membaca ${rows.length - 1} baris data` 
+                };
+                
+            } catch (error) {
+                return { 
+                    success: false, 
+                    message: `Error: ${error.message}` 
+                };
+            }
+        }
+        
+        function convertToCSVUrl(googleSheetsUrl) {
+            // Extract sheet ID from various Google Sheets URL formats
+            let sheetId = '';
+            
+            if (googleSheetsUrl.includes('/d/')) {
+                const match = googleSheetsUrl.match(/\/d\/([a-zA-Z0-9-_]+)/);
+                if (match) {
+                    sheetId = match[1];
+                }
+            }
+            
+            if (!sheetId) {
+                throw new Error('Invalid Google Sheets URL format');
+            }
+            
+            return `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=0`;
+        }
+        
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n');
+            const result = [];
+            
+            for (let line of lines) {
+                if (line.trim()) {
+                    // Simple CSV parsing (handles basic cases)
+                    const row = line.split(',').map(cell => cell.replace(/"/g, '').trim());
+                    result.push(row);
+                }
+            }
+            
+            return result;
+        }
+        
+        async function loadRealData() {
+            if (!sheetsConfig.isConnected) return;
+            
+            try {
+                // Use Apps Script if available, otherwise use direct CSV
+                if (sheetsConfig.appsScriptUrl) {
+                    await loadDataFromAppsScript();
+                } else {
+                    await loadDataFromCSV();
+                }
+                
+            } catch (error) {
+                console.error('Error loading real data:', error);
+                showNotification('Error loading data from spreadsheets. Using demo data.', 'error');
+            }
+        }
+        
+        async function loadDataFromAppsScript() {
+            try {
+                // Load OMOB data
+                const omobResponse = await fetch(`${sheetsConfig.appsScriptUrl}?action=getOMOBData`);
+                const omobResult = await omobResponse.json();
+                if (omobResult.success && omobResult.data) {
+                    realOMOBData = omobResult.data;
+                }
+                
+                // Load OPL data
+                const oplResponse = await fetch(`${sheetsConfig.appsScriptUrl}?action=getOPLData`);
+                const oplResult = await oplResponse.json();
+                if (oplResult.success && oplResult.data) {
+                    realOPLData = oplResult.data;
+                }
+                
+            } catch (error) {
+                throw new Error(`Apps Script loading error: ${error.message}`);
+            }
+        }
+        
+        async function loadDataFromCSV() {
+            try {
+                // Load OMOB data
+                if (sheetsConfig.omobSheetUrl) {
+                    const omobCsvUrl = convertToCSVUrl(sheetsConfig.omobSheetUrl);
+                    const omobResponse = await fetch(omobCsvUrl);
+                    const omobCsvText = await omobResponse.text();
+                    const omobRows = parseCSV(omobCsvText);
+                    realOMOBData = processOMOBData(omobRows);
+                }
+                
+                // Load OPL data
+                if (sheetsConfig.oplSheetUrl) {
+                    const oplCsvUrl = convertToCSVUrl(sheetsConfig.oplSheetUrl);
+                    const oplResponse = await fetch(oplCsvUrl);
+                    const oplCsvText = await oplResponse.text();
+                    const oplRows = parseCSV(oplCsvText);
+                    realOPLData = processOPLData(oplRows);
+                }
+                
+            } catch (error) {
+                throw new Error(`CSV loading error: ${error.message}`);
+            }
+        }
+        
+        function processOMOBData(rows) {
+            if (rows.length < 2) return [];
+            
+            const headers = rows[0];
+            const data = [];
+            const machineGroups = {};
+            
+            // Group documents by machine
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                if (row.length < 12) continue; // Minimum required columns
+                
+                const process = row[0] || '';
+                const roomNumber = row[1] || '';
+                const machineName = row[2] || '';
+                const machineType = row[3] || '';
+                const docType = (row[4] || '').toLowerCase().trim();
+                const docNumber = row[5] || '';
+                const docTitle = row[6] || '';
+                const revision = parseInt(row[7]) || 0;
+                const issuedDate = row[8] || '';
+                const reviewDate = row[9] || '';
+                const docStatus = (row[10] || '').toLowerCase().trim();
+                const machineStatus = (row[11] || '').toLowerCase().trim();
+                
+                const machineKey = `${machineName}_${roomNumber}`;
+                
+                if (!machineGroups[machineKey]) {
+                    machineGroups[machineKey] = {
+                        id: Object.keys(machineGroups).length + 1,
+                        process: process,
+                        roomNumber: roomNumber,
+                        machineName: machineName,
+                        machineType: machineType,
+                        machineStatus: machineStatus,
+                        documents: {}
+                    };
+                }
+                
+                // Map document types
+                let mappedDocType = '';
+                if (docType.includes('sop') || docType.includes('standard')) {
+                    mappedDocType = 'sop';
+                } else if (docType.includes('logbook') || docType.includes('log')) {
+                    mappedDocType = 'logbook';
+                } else if (docType.includes('hira') || docType.includes('hazard')) {
+                    mappedDocType = 'hira';
+                } else if (docType.includes('iia') || docType.includes('impact')) {
+                    mappedDocType = 'iia';
+                } else if (docType.includes('opl') || docType.includes('one point')) {
+                    mappedDocType = 'opl';
+                } else {
+                    // Default mapping based on common patterns
+                    mappedDocType = docType.replace(/\s+/g, '').toLowerCase();
+                }
+                
+                if (mappedDocType) {
+                    // Calculate expiry date (1 year from review date or issued date)
+                    let expiryDate = '';
+                    if (reviewDate) {
+                        const reviewDateObj = new Date(reviewDate);
+                        if (!isNaN(reviewDateObj.getTime())) {
+                            reviewDateObj.setFullYear(reviewDateObj.getFullYear() + 1);
+                            expiryDate = reviewDateObj.toISOString().split('T')[0];
+                        }
+                    } else if (issuedDate) {
+                        const issuedDateObj = new Date(issuedDate);
+                        if (!isNaN(issuedDateObj.getTime())) {
+                            issuedDateObj.setFullYear(issuedDateObj.getFullYear() + 1);
+                            expiryDate = issuedDateObj.toISOString().split('T')[0];
+                        }
+                    }
+                    
+                    machineGroups[machineKey].documents[mappedDocType] = {
+                        status: (docStatus === 'complete' || docStatus === 'lengkap' || docStatus === 'ada') ? 'complete' : 'incomplete',
+                        docNumber: docNumber,
+                        title: docTitle || `${mappedDocType.toUpperCase()} ${machineName}`,
+                        revision: revision,
+                        issuedDate: issuedDate,
+                        reviewDate: reviewDate,
+                        expiryDate: expiryDate
+                    };
+                }
+            }
+            
+            // Convert to array and ensure all machines have all document types
+            const requiredDocTypes = ['sop', 'logbook', 'hira', 'iia', 'opl'];
+            
+            Object.values(machineGroups).forEach(machine => {
+                requiredDocTypes.forEach(docType => {
+                    if (!machine.documents[docType]) {
+                        machine.documents[docType] = {
+                            status: 'incomplete',
+                            docNumber: '',
+                            title: `${docType.toUpperCase()} ${machine.machineName}`,
+                            revision: 0,
+                            issuedDate: '',
+                            reviewDate: '',
+                            expiryDate: ''
+                        };
+                    }
+                });
+                
+                data.push(machine);
+            });
+            
+            return data;
+        }
+        
+        function processOPLData(rows) {
+            if (rows.length < 2) return [];
+            
+            const headers = rows[0];
+            const data = [];
+            
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                if (row.length < 8) continue; // Minimum required columns
+                
+                // Skip if essential data is missing
+                if (!row[1] && !row[2]) continue; // Skip if no title and no OPL number
+                
+                const opl = {
+                    id: i,
+                    title: row[1] || '', // Column B - Judul OPL
+                    oplNumber: row[2] || '', // Column C - Nomor OPL
+                    revision: parseInt(row[3]) || 1, // Column D - Rev
+                    author: row[4] || '', // Column E - Penyusun
+                    owner: row[5] || '', // Column F - OPL Owner
+                    issuedDate: row[6] || new Date().toISOString().split('T')[0], // Column G - Issued Date
+                    machineArea: row[7] || '', // Column H - Mesin/area
+                    oplLink: row[13] || '#' // Column N - Link OPL (index 13 = column N)
+                };
+                
+                data.push(opl);
+            }
+            
+            return data;
+        }
+        
+        function updateConnectionStatus() {
+            const statusDot = document.getElementById('connectionStatus');
+            const statusText = document.getElementById('connectionText');
+            
+            if (sheetsConfig.isConnected) {
+                statusDot.className = 'w-3 h-3 bg-green-500 rounded-full';
+                statusText.textContent = 'Terhubung dengan Google Sheets';
+            } else {
+                statusDot.className = 'w-3 h-3 bg-red-500 rounded-full';
+                statusText.textContent = 'Belum Terhubung (Menggunakan Data Demo)';
+            }
+        }
+        
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 transform translate-x-full`;
+            
+            let bgColor = 'bg-blue-500';
+            let icon = '📘';
+            
+            switch (type) {
+                case 'success':
+                    bgColor = 'bg-green-500';
+                    icon = '✅';
+                    break;
+                case 'error':
+                    bgColor = 'bg-red-500';
+                    icon = '❌';
+                    break;
+                case 'warning':
+                    bgColor = 'bg-yellow-500';
+                    icon = '⚠️';
+                    break;
+            }
+            
+            notification.className += ` ${bgColor} text-white`;
+            notification.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <span class="text-lg">${icon}</span>
+                    <p class="text-sm font-medium">${message}</p>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 4000);
+        }
+        
+        // Get current data source (real or demo)
+        function getCurrentOMOBData() {
+            return sheetsConfig.isConnected && realOMOBData.length > 0 ? realOMOBData : omobData;
+        }
+        
+        function getCurrentOPLData() {
+            return sheetsConfig.isConnected && realOPLData.length > 0 ? realOPLData : oplDatabase;
+        }
+
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedConfiguration();
+            updateConnectionStatus();
+            
+            // Try to load real data if connected
+            if (sheetsConfig.isConnected) {
+                loadRealData().then(() => {
+                    initializeDashboard();
+                });
+            } else {
+                initializeDashboard();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9970bf6921e33df6',t:'MTc2MTg4ODQ5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
